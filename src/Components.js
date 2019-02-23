@@ -35,7 +35,6 @@ export const Loading = styled.div`
   background-origin: border-box;
   background-clip: content-box, border-box;
   border-color: transparent transparent #ddd #ddd;
-  margin: auto;
 `;
 
 export const Button = styled.input`

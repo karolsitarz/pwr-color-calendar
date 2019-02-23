@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 import { getCalendars, getEvents } from '../gapi';
-import { Section, Title, Spacer, Button, Loading, Container } from '../Components';
+import { Section, Title, Spacer, Button, Loading } from '../Components';
+import ColorPicker from '../ColorPicker';
 
 const CalendarList = styled.div`
   background: #f5f5f5;
@@ -62,23 +63,20 @@ const CalendarItem = styled.div`
   `}
 `;
 
-export const slide = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(1em) scale(0.95);
-  }
-`;
-export const Page = styled(Container)`
-  animation: ${slide} .5s ease backwards;
-`;
-
 export default class App extends Component {
   constructor (props) {
     super(props);
     this.state = {
       lists: [],
       selected: undefined,
-      page: 0
+      page: 0,
+      types: {
+        W: false,
+        C: false,
+        L: false,
+        S: false,
+        P: false
+      }
     };
   }
   componentDidMount () {
@@ -95,7 +93,7 @@ export default class App extends Component {
     return (
       <Section>
         {this.state.page !== 0 ? null : (
-          <Page>
+          <Section>
             <Title size='2'>Step one.</Title>
             <Title size='1.75' unique bold>Pick your calendar.</Title>
             <Spacer size='2' />
@@ -115,15 +113,56 @@ export default class App extends Component {
             <Spacer size='2' />
             {isNaN(this.state.selected) ? null
               : <Button type='button' value='Next' onClick={e => this.checkIfHas()} /> }
-          </Page>
+          </Section>
+        )}
+        {this.state.page !== 1 ? null : (
+          <Section>
+            <Loading />
+            <Spacer size='2' />
+            <Title size='1.25'>Please wait.</Title>
+          </Section>
+        )}
+        {this.state.page !== 2 ? null : (
+          <Section>
+            <ColorPicker
+              def={this.state.lists[this.state.selected].backgroundColor}
+              text='Wykład'
+              initial={4} />
+            <ColorPicker
+              def={this.state.lists[this.state.selected].backgroundColor}
+              text='Ćwiczenia'
+              initial={2} />
+            <ColorPicker
+              def={this.state.lists[this.state.selected].backgroundColor}
+              text='Laboratorium'
+              initial={9} />
+            <ColorPicker
+              def={this.state.lists[this.state.selected].backgroundColor}
+              text='Seminarium'
+              initial={3} />
+            <ColorPicker
+              def={this.state.lists[this.state.selected].backgroundColor}
+              text='Projekt'
+              initial={5} />
+          </Section>
         )}
       </Section>
     );
   }
   checkIfHas () {
+    this.setState({ page: 1 });
     getEvents(this.state.lists[this.state.selected].id)
       .then(res => {
-        if (!res || !res.result || !res.result.items || res.result.items.length === 0) return;
+        if (!res || !res.result || !res.result.items) {
+          window.alert('Please try again later.');
+          this.setState({ page: 0 });
+          return;
+        }
+        if (res.result.items.length === 0) {
+          window.alert('Please choose a different calendar.');
+          this.setState({ page: 0 });
+          return;
+        }
         console.log(res);
         const events = res.result.items;
         // this.setState({ lists: res.result.items });
@@ -146,6 +185,16 @@ export default class App extends Component {
         const P = events.some(e => e.summary &&
           typeof e.summary === 'string' &&
           e.summary.substring(0, 2) === 'P ');
+
+        if (!W && !C && !L && !S && !P) {
+          window.alert('Please choose a different calendar.');
+          this.setState({ page: 0 });
+          return;
+        }
+        this.setState({
+          page: 2,
+          types: { W, C, L, S, P }
+        });
       });
   }
 }

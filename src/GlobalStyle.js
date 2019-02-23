@@ -47,6 +47,7 @@ export default createGlobalStyle`
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
   }
   input {
     font-size: inherit;
