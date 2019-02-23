@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import styled, { css } from 'styled-components';
-import { getCalendars } from '../gapi';
-import { Section, Title, Spacer, Button, Loading } from '../Components';
+import styled, { css, keyframes } from 'styled-components';
+import { getCalendars, getEvents } from '../gapi';
+import { Section, Title, Spacer, Button, Loading, Container } from '../Components';
 
 const CalendarList = styled.div`
   background: #f5f5f5;
@@ -28,6 +28,7 @@ const CalendarItem = styled.div`
   pointer-events: auto;
   overflow: hidden;
   cursor: pointer;
+  border-radius: 1em;
   > span {
     display: inline-flex;
     height: 100%;
@@ -52,6 +53,7 @@ const CalendarItem = styled.div`
     height: 100%;
     background: #00000010;
     opacity: 0;
+    transition: opacity .3s ease;
   }
   ${props => props.selected && css`
     &::before {
@@ -60,12 +62,23 @@ const CalendarItem = styled.div`
   `}
 `;
 
+export const slide = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(1em) scale(0.95);
+  }
+`;
+export const Page = styled(Container)`
+  animation: ${slide} .5s ease backwards;
+`;
+
 export default class App extends Component {
   constructor (props) {
     super(props);
     this.state = {
       lists: [],
-      selected: 0
+      selected: undefined,
+      page: 0
     };
   }
   componentDidMount () {
@@ -81,25 +94,58 @@ export default class App extends Component {
   render () {
     return (
       <Section>
-        <Title size='2'>Step one.</Title>
-        <Title size='1.75' unique bold>Pick your calendar.</Title>
-        <Spacer size='2' />
-        <CalendarList>
-          {this.state.lists.length === 0
-            ? <Loading />
-            : this.state.lists.map(c => (
-              <CalendarItem
-                selected={this.state.selected === c.id}
-                onClick={e => this.setState({ selected: c.id })}
-                key={c.id} >
-                <span>{c.summary}</span>
-                <div style={{ backgroundColor: c.backgroundColor }} />
-              </CalendarItem>
-            ))}
-        </CalendarList>
-        <Spacer size='2' />
-        <Button type='button' value='Next' onClick={e => {}} />
+        {this.state.page !== 0 ? null : (
+          <Page>
+            <Title size='2'>Step one.</Title>
+            <Title size='1.75' unique bold>Pick your calendar.</Title>
+            <Spacer size='2' />
+            <CalendarList>
+              {this.state.lists.length === 0
+                ? <Loading />
+                : this.state.lists.map((c, i) => (
+                  <CalendarItem
+                    selected={this.state.selected === i}
+                    onClick={e => this.setState({ selected: i })}
+                    key={c.id} >
+                    <span>{c.summary}</span>
+                    <div style={{ backgroundColor: c.backgroundColor }} />
+                  </CalendarItem>
+                ))}
+            </CalendarList>
+            <Spacer size='2' />
+            {isNaN(this.state.selected) ? null
+              : <Button type='button' value='Next' onClick={e => this.checkIfHas()} /> }
+          </Page>
+        )}
       </Section>
     );
+  }
+  checkIfHas () {
+    getEvents(this.state.lists[this.state.selected].id)
+      .then(res => {
+        if (!res || !res.result || !res.result.items || res.result.items.length === 0) return;
+        console.log(res);
+        const events = res.result.items;
+        // this.setState({ lists: res.result.items });
+        const W = events.some(e => e.summary &&
+          typeof e.summary === 'string' &&
+          e.summary.substring(0, 2) === 'W ');
+
+        const C = events.some(e => e.summary &&
+          typeof e.summary === 'string' &&
+          e.summary.substring(0, 2) === 'C ');
+
+        const L = events.some(e => e.summary &&
+          typeof e.summary === 'string' &&
+          e.summary.substring(0, 2) === 'L ');
+
+        const S = events.some(e => e.summary &&
+          typeof e.summary === 'string' &&
+          e.summary.substring(0, 2) === 'S ');
+
+        const P = events.some(e => e.summary &&
+          typeof e.summary === 'string' &&
+          e.summary.substring(0, 2) === 'P ');
+      });
   }
 }

@@ -2,19 +2,10 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { on, handleSignOutClick as signOut } from './gapi';
 import GlobalStyle from './GlobalStyle';
-import { Button, fadeIn } from './Components';
+import { Button, fadeIn, Container } from './Components';
 import Login from './sections/Login';
 import Init from './sections/Init';
 import Form from './sections/Form';
-
-const Container = styled.section`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
 
 const Logout = styled(Button)`
   font-size: 0.75em;

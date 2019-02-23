@@ -46,3 +46,8 @@ export const on = (type, cb) => window._listener.addEventListener(type, e => {
 });
 
 export const getCalendars = () => gapi.client.calendar.calendarList.list();
+
+export const getEvents = (id, all = false) => gapi.client.calendar.events.list({
+  calendarId: id,
+  timeMin: !all ? new Date(new Date() - 1000 * 60 * 60 * 24 * 7).toISOString() : undefined
+});

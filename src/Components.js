@@ -1,19 +1,22 @@
 import styled, { keyframes, css } from 'styled-components';
 
-export const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(1em) scale(0.95);
-  }
-`;
-export const Section = styled.section`
-  animation: ${fadeIn} .5s ease backwards;
+export const Container = styled.section`
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+`;
+
+export const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(1em) scale(0.95);
+  }
+`;
+export const Section = styled(Container)`
+  animation: ${fadeIn} .5s ease backwards;
 `;
 
 export const spin = keyframes`
