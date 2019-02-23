@@ -208,6 +208,13 @@ export default class App extends Component {
             <Title size='1.75' unique bold>Everything's nice and pretty.</Title>
           </Section>
         )}
+        {this.state.page !== -3 ? null : (
+          <Section>
+            <Title size='2' unique bold>Uh oh!.</Title>
+            <Title size='1.75'>Something went terribly wrong. Try again later, please.</Title>
+            <Title size='1'>Check console for more info.</Title>
+          </Section>
+        )}
       </Section>
     );
   }
@@ -270,10 +277,9 @@ export default class App extends Component {
       maxConcurrent: 1,
       minTime: 225
     });
-    console.log(this.values);
     let skip = 0;
+    let running = true;
     for (let e of this.state.events) {
-      console.log(e.colorId, this.values[e.summary[0]]);
       if (e.summary[1] === ' ' &&
       // pierwsza litera jest jedna z dozwolonych
       ['W', 'C', 'L', 'S', 'P'].includes(e.summary[0]) &&
@@ -281,10 +287,17 @@ export default class App extends Component {
       this.values.hasOwnProperty(e.summary[0]) &&
       (!e.hasOwnProperty('colorId') || (e.hasOwnProperty('colorId') && e.colorId !== this.values[e.summary[0]]))) {
         limiter.schedule(() => updateEventColor(this.state.lists[this.state.selected].id, e.id, this.values[e.summary[0]])).then(res => {
-          console.log(res);
           this.setState({ progress: this.state.progress * 1 + 1 });
           if (this.state.progress >= this.state.max) this.setState({ page: 2 });
-        });
+        })
+          .catch(e => {
+            if (running) {
+              running = !running;
+              console.error(e);
+              limiter.stop();
+              this.setState({ page: -3 });
+            }
+          });
       } else skip++;
     }
     if (skip >= this.state.max) this.setState({ page: 2 });

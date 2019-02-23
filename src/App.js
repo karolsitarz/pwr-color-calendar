@@ -5,6 +5,7 @@ import { Container } from './Components';
 import Login from './sections/Login';
 import Init from './sections/Init';
 import Form from './sections/Form';
+import ErrorPage from './ErrorPage';
 
 export default class App extends Component {
   constructor (props) {
@@ -22,9 +23,11 @@ export default class App extends Component {
     return (
       <Container>
         <GlobalStyle />
-        {this.state.section !== 'INIT' ? null : (<Init />)}
-        {this.state.section !== 'LOGIN' ? null : (<Login />)}
-        {this.state.section !== 'FORM1' ? null : (<Form />)}
+        <ErrorPage>
+          {this.state.section !== 'INIT' ? null : (<Init />)}
+          {this.state.section !== 'LOGIN' ? null : (<Login />)}
+          {this.state.section !== 'FORM1' ? null : (<Form />)}
+        </ErrorPage>
       </Container>
     );
   }
