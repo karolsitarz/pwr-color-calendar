@@ -40,6 +40,7 @@ export default createGlobalStyle`
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     -webkit-tap-highlight-color: transparent;
     outline: none;
+    pointer-events: none;
   }
   html, body, #root {
     width: 100%;
