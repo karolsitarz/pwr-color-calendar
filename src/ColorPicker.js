@@ -89,6 +89,10 @@ const Color = styled.div`
   }
 `;
 
+const Wrapper = styled.div`
+  margin: .5em;
+`;
+
 export default class ColorPicker extends Component {
   constructor (props) {
     super(props);
@@ -101,64 +105,65 @@ export default class ColorPicker extends Component {
     this.setState({ selected: id });
   }
   render () {
-    return (
-      <div>
-        <Badge
-          def={this.props.def}
-          onClick={e => this.setState({ open: !this.state.open })}
-          text={this.props.text}
-          cid={this.state.selected} />
-        <ColorList open={this.state.open}>
-          <Color
-            cid={0}
-            onClick={e => this.select(0)}
-            selected={this.state.selected} />
-          <Color
-            cid={7}
-            onClick={e => this.select(7)}
-            selected={this.state.selected} />
-          <Color
-            cid={4}
-            onClick={e => this.select(4)}
-            selected={this.state.selected} />
-          <Color
-            cid={5}
-            onClick={e => this.select(5)}
-            selected={this.state.selected} />
-          <Color
-            cid={1}
-            onClick={e => this.select(1)}
-            selected={this.state.selected} />
-          <Color
-            cid={9}
-            onClick={e => this.select(9)}
-            selected={this.state.selected} />
-          <Color
-            cid={6}
-            onClick={e => this.select(6)}
-            selected={this.state.selected} />
-          <Color
-            cid={2}
-            onClick={e => this.select(2)}
-            selected={this.state.selected} />
-          <Color
-            cid={8}
-            onClick={e => this.select(8)}
-            selected={this.state.selected} />
-          <Color
-            cid={3}
-            onClick={e => this.select(3)}
-            selected={this.state.selected} />
-          <Color
-            cid={11}
-            onClick={e => this.select(11)}
-            selected={this.state.selected} />
-          <Color
-            cid={10}
-            onClick={e => this.select(10)}
-            selected={this.state.selected} />
-        </ColorList>
-      </div>
-    );
+    return this.props.visible !== true ? null
+      : (
+        <Wrapper>
+          <Badge
+            def={this.props.def}
+            onClick={e => this.setState({ open: !this.state.open })}
+            text={this.props.text}
+            cid={this.state.selected} />
+          <ColorList open={this.state.open}>
+            <Color
+              cid={0}
+              onClick={e => this.select(0)}
+              selected={this.state.selected} />
+            <Color
+              cid={7}
+              onClick={e => this.select(7)}
+              selected={this.state.selected} />
+            <Color
+              cid={4}
+              onClick={e => this.select(4)}
+              selected={this.state.selected} />
+            <Color
+              cid={5}
+              onClick={e => this.select(5)}
+              selected={this.state.selected} />
+            <Color
+              cid={1}
+              onClick={e => this.select(1)}
+              selected={this.state.selected} />
+            <Color
+              cid={9}
+              onClick={e => this.select(9)}
+              selected={this.state.selected} />
+            <Color
+              cid={6}
+              onClick={e => this.select(6)}
+              selected={this.state.selected} />
+            <Color
+              cid={2}
+              onClick={e => this.select(2)}
+              selected={this.state.selected} />
+            <Color
+              cid={8}
+              onClick={e => this.select(8)}
+              selected={this.state.selected} />
+            <Color
+              cid={3}
+              onClick={e => this.select(3)}
+              selected={this.state.selected} />
+            <Color
+              cid={11}
+              onClick={e => this.select(11)}
+              selected={this.state.selected} />
+            <Color
+              cid={10}
+              onClick={e => this.select(10)}
+              selected={this.state.selected} />
+          </ColorList>
+        </Wrapper>
+      );
   }
 }

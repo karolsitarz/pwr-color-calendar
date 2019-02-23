@@ -50,6 +50,11 @@ export const Button = styled.input`
   &:hover {
     transform: scale(0.95);
   }
+  ${props => props.disabled === true && css`
+    opacity: 0.3;
+    pointer-events: none;
+    filter: grayscale(1);
+  `}
 `;
 
 export const Title = styled.span`
