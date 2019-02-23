@@ -50,6 +50,11 @@ export const Button = styled.input`
   &:hover {
     transform: scale(0.95);
   }
+  ${props => props.disabled === true && css`
+    opacity: 0.3;
+    pointer-events: none;
+    filter: grayscale(1);
+  `}
 `;
 
 export const Title = styled.span`
@@ -68,8 +73,8 @@ export const Title = styled.span`
 
 export const Spacer = styled.span`
   align-self: stretch;
-  min-height: ${props => props.size || 0}em;
-  min-width: ${props => props.size || 0}em;
+  min-height: ${props => props.$size || 0}em;
+  min-width: ${props => props.$size || 0}em;
   max-height: 100%;
   max-width: 100%;
 `;

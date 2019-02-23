@@ -49,6 +49,10 @@ export default createGlobalStyle`
     padding: 0;
     overflow: hidden;
   }
+  #root {
+    overflow: auto;
+    pointer-events: auto;
+  }
   input {
     font-size: inherit;
     font-family: inherit;
