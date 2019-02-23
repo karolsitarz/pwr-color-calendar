@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 
 const colorID = {
-  0: '#ffffff',
-  1: '#7986CB',
-  2: '#33B679',
-  3: '#8E24AA',
-  4: '#E67C73',
-  5: '#F6BF26',
-  6: '#F4511E',
-  7: '#039BE5',
-  8: '#616161',
-  9: '#3F51B5',
-  10: '#0B8043',
-  11: '#D50000'
+  '1': '#7986CB',
+  '2': '#33B679',
+  '3': '#8E24AA',
+  '4': '#E67C73',
+  '5': '#F6BF26',
+  '6': '#F4511E',
+  '7': '#039BE5',
+  '8': '#616161',
+  '9': '#3F51B5',
+  '10': '#0B8043',
+  '11': '#D50000'
 };
 
 const ColorList = styled.div`
@@ -40,7 +39,7 @@ const ColorList = styled.div`
 `;
 
 const Badge = styled.div`
-  background: ${props => props.cid !== 0 ? colorID[props.cid] : props.def};
+  background: ${props => props.cid !== '' ? colorID[props.cid] : props.def};
   width: 14em;
   height: 3em;
   padding: 1em;
@@ -73,7 +72,7 @@ const Color = styled.div`
   border-radius: 1em;
   &::after {
     content: "";
-    background: ${props => colorID[props.cid]};
+    background: ${props => props.cid !== '' ? colorID[props.cid] : '#ffffff'};
     width: 1.5em;
     height: 1.5em;
     border-radius: 50%;
@@ -116,52 +115,52 @@ export default class ColorPicker extends Component {
             cid={this.state.selected} />
           <ColorList open={this.state.open}>
             <Color
-              cid={0}
-              onClick={e => this.select(0)}
+              cid={''}
+              onClick={e => this.select('')}
               selected={this.state.selected} />
             <Color
-              cid={7}
-              onClick={e => this.select(7)}
+              cid={'7'}
+              onClick={e => this.select('7')}
               selected={this.state.selected} />
             <Color
-              cid={4}
-              onClick={e => this.select(4)}
+              cid={'4'}
+              onClick={e => this.select('4')}
               selected={this.state.selected} />
             <Color
-              cid={5}
-              onClick={e => this.select(5)}
+              cid={'5'}
+              onClick={e => this.select('5')}
               selected={this.state.selected} />
             <Color
-              cid={1}
-              onClick={e => this.select(1)}
+              cid={'1'}
+              onClick={e => this.select('1')}
               selected={this.state.selected} />
             <Color
-              cid={9}
-              onClick={e => this.select(9)}
+              cid={'9'}
+              onClick={e => this.select('9')}
               selected={this.state.selected} />
             <Color
-              cid={6}
-              onClick={e => this.select(6)}
+              cid={'6'}
+              onClick={e => this.select('6')}
               selected={this.state.selected} />
             <Color
-              cid={2}
-              onClick={e => this.select(2)}
+              cid={'2'}
+              onClick={e => this.select('2')}
               selected={this.state.selected} />
             <Color
-              cid={8}
-              onClick={e => this.select(8)}
+              cid={'8'}
+              onClick={e => this.select('8')}
               selected={this.state.selected} />
             <Color
-              cid={3}
-              onClick={e => this.select(3)}
+              cid={'3'}
+              onClick={e => this.select('3')}
               selected={this.state.selected} />
             <Color
-              cid={11}
-              onClick={e => this.select(11)}
+              cid={'11'}
+              onClick={e => this.select('11')}
               selected={this.state.selected} />
             <Color
-              cid={10}
-              onClick={e => this.select(10)}
+              cid={'10'}
+              onClick={e => this.select('10')}
               selected={this.state.selected} />
           </ColorList>
         </Wrapper>

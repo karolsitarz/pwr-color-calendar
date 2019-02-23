@@ -55,5 +55,5 @@ export const getEvents = (id, all = false) => gapi.client.calendar.events.list({
 export const updateEventColor = (cid, eid, color) => gapi.client.calendar.events.patch({
   calendarId: cid,
   eventId: eid,
-  colorId: (!isNaN(color) && color >= 1 && color <= 11) ? color : ''
+  colorId: (!isNaN(color) && color >= 1 && color <= 11) ? color : null
 });

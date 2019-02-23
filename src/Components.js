@@ -73,8 +73,8 @@ export const Title = styled.span`
 
 export const Spacer = styled.span`
   align-self: stretch;
-  min-height: ${props => props.size || 0}em;
-  min-width: ${props => props.size || 0}em;
+  min-height: ${props => props.$size || 0}em;
+  min-width: ${props => props.$size || 0}em;
   max-height: 100%;
   max-width: 100%;
 `;

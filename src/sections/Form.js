@@ -69,7 +69,6 @@ const ProgressBar = styled.div`
   height: .15em;
   background: #ddd;
   min-width: 50%;
-  margin: 2em 0;
   overflow: hidden;
   &::before {
     content: "";
@@ -98,15 +97,17 @@ export default class App extends Component {
         S: false,
         P: false
       },
-      progress: 0
+      progress: 0,
+      max: 1
     };
     this.values = {
-      W: 4,
-      C: 2,
-      L: 9,
-      S: 3,
-      P: 5
+      W: '4',
+      C: '2',
+      L: '9',
+      S: '3',
+      P: '5'
     };
+    this.changeColors = this.changeColors.bind(this);
   }
   componentDidMount () {
     if (this.state.lists.length === 0) {
@@ -125,7 +126,7 @@ export default class App extends Component {
           <Section>
             <Title size='2'>Step one.</Title>
             <Title size='1.75' unique bold>Pick your calendar.</Title>
-            <Spacer size='2' />
+            <Spacer $size='2' />
             <CalendarList>
               {this.state.lists.length === 0
                 ? <Loading />
@@ -139,14 +140,14 @@ export default class App extends Component {
                   </CalendarItem>
                 ))}
             </CalendarList>
-            <Spacer size='2' />
+            <Spacer $size='2' />
             <Button disabled={isNaN(this.state.selected)} type='button' value='Next' onClick={e => this.checkIfHas()} />
           </Section>
         )}
         {this.state.page !== -1 ? null : (
           <Section>
             <Loading />
-            <Spacer size='2' />
+            <Spacer $size='2' />
             <Title size='1.25'>Please wait.</Title>
           </Section>
         )}
@@ -154,7 +155,7 @@ export default class App extends Component {
           <Section>
             <Title size='2'>Step two.</Title>
             <Title size='1.75' unique bold>Pick your colors.</Title>
-            <Spacer size='2' />
+            <Spacer $size='2' />
             <ColorPicker
               onSelect={v => (this.values.W = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
@@ -185,19 +186,20 @@ export default class App extends Component {
               text='Projekt'
               visible={this.state.types.P}
               initial={this.values.P} />
-            <Spacer size='2' />
+            <Spacer $size='2' />
             <Button type='button' value='Change colors' onClick={e => this.changeColors()} />
           </Section>
         )}
         {this.state.page !== -2 ? null : (
           <Section>
             <Loading />
-            <Spacer size='1' />
-            <ProgressBar progress={this.state.progress} max={this.state.events.length} />
-            <div>{this.state.progress} / {this.state.events.length}</div>
-            <div>{(this.state.progress / this.state.events.length * 100).toFixed(1)}%</div>
-            <Spacer size='2' />
+            <Spacer $size='1' />
             <Title size='1.25'>Please be patient.</Title>
+            <Spacer $size='1' />
+            <ProgressBar progress={this.state.progress} max={this.state.max} />
+            <Spacer $size='1' />
+            <Title bold unique size={0.8}>{(this.state.progress / this.state.max * 100).toFixed(1)}%</Title>
+            <Title size={0.6}>{this.state.progress} / {this.state.max}</Title>
           </Section>
         )}
         {this.state.page !== 2 ? null : (
@@ -226,7 +228,10 @@ export default class App extends Component {
         // console.log(res);
 
         const events = res.result.items;
-        this.setState({ events });
+        this.setState({
+          events,
+          max: events.length
+        });
 
         const W = events.some(e => e.summary &&
           typeof e.summary === 'string' &&
@@ -260,31 +265,34 @@ export default class App extends Component {
       });
   }
   changeColors () {
-    this.setState({ page: -2 });
+    this.setState({ page: -1 });
     const limiter = new Bottleneck({
       maxConcurrent: 1,
       minTime: 225
     });
-    // console.log(this.values);
-
+    console.log(this.values);
+    let skip = 0;
     for (let e of this.state.events) {
-      // console.log(e.colorId, this.values[e.summary[0]]);
+      console.log(e.colorId, this.values[e.summary[0]]);
       if (e.summary[1] === ' ' &&
       // pierwsza litera jest jedna z dozwolonych
-      (e.summary[0] === 'W' || e.summary[0] === 'C' || e.summary[0] === 'L' || e.summary[0] === 'S' || e.summary[0] === 'P') &&
+      ['W', 'C', 'L', 'S', 'P'].includes(e.summary[0]) &&
       this.state.types[e.summary[0]] === true &&
-      this.values[e.summary[0]] &&
-      (!e.colorId || (e.colorId && e.colorId != this.values[e.summary[0]]))) {
+      this.values.hasOwnProperty(e.summary[0]) &&
+      (!e.hasOwnProperty('colorId') || (e.hasOwnProperty('colorId') && e.colorId !== this.values[e.summary[0]]))) {
         limiter.schedule(() => updateEventColor(this.state.lists[this.state.selected].id, e.id, this.values[e.summary[0]])).then(res => {
-          // console.log('Finished', res);
-          this.setState({ progress: this.state.progress + 1 });
-          limiter.running().then(count => {
-            if (count === 0) this.setState({ page: 2 });
-          });
+          console.log(res);
+          this.setState({ progress: this.state.progress * 1 + 1 });
+          if (this.state.progress >= this.state.max) this.setState({ page: 2 });
         });
-      } else {
-        this.setState({ progress: this.state.progress + 1 });
-      }
+      } else skip++;
+    }
+    if (skip >= this.state.max) this.setState({ page: 2 });
+    else {
+      this.setState({
+        max: this.state.max - skip,
+        page: -2
+      });
     }
   }
 }
