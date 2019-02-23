@@ -103,6 +103,7 @@ export default class ColorPicker extends Component {
   }
   select (id) {
     this.setState({ selected: id });
+    this.props.onSelect(id);
   }
   render () {
     return this.props.visible !== true ? null

@@ -71,7 +71,8 @@ const ProgressBar = styled.div`
   min-width: 50%;
   margin: 2em 0;
   overflow: hidden;
-  > div {
+  &::before {
+    content: "";
     background: var(--main);
     position: absolute;
     left: 0;
@@ -79,7 +80,7 @@ const ProgressBar = styled.div`
     height: 100%;
     transition: width .1s ease;
     border-radius: 1000px;
-    width: calc(${props => props.progress} / ${props => props.max} * 100%);
+    width: ${props => `calc(${props.progress} / ${props.max} * 100%)`};
   }
 `;
 
@@ -112,7 +113,7 @@ export default class App extends Component {
       getCalendars()
         .then(res => {
           if (!res || !res.result || !res.result.items || res.result.items.length === 0) return;
-          console.log(res);
+          // console.log(res);
           this.setState({ lists: res.result.items });
         });
     }
@@ -155,31 +156,31 @@ export default class App extends Component {
             <Title size='1.75' unique bold>Pick your colors.</Title>
             <Spacer size='2' />
             <ColorPicker
-              onSelect={v => (this.value.W = v)}
+              onSelect={v => (this.values.W = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
               text='Wykład'
               visible={this.state.types.W}
               initial={this.values.W} />
             <ColorPicker
-              onSelect={v => (this.value.C = v)}
+              onSelect={v => (this.values.C = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
               text='Ćwiczenia'
               visible={this.state.types.C}
               initial={this.values.C} />
             <ColorPicker
-              onSelect={v => (this.value.L = v)}
+              onSelect={v => (this.values.L = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
               text='Laboratorium'
               visible={this.state.types.L}
               initial={this.values.L} />
             <ColorPicker
-              onSelect={v => (this.value.S = v)}
+              onSelect={v => (this.values.S = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
               text='Seminarium'
               visible={this.state.types.S}
               initial={this.values.S} />
             <ColorPicker
-              onSelect={v => (this.value.P = v)}
+              onSelect={v => (this.values.P = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
               text='Projekt'
               visible={this.state.types.P}
@@ -188,11 +189,13 @@ export default class App extends Component {
             <Button type='button' value='Change colors' onClick={e => this.changeColors()} />
           </Section>
         )}
-        {this.state.page !== -1 ? null : (
+        {this.state.page !== -2 ? null : (
           <Section>
             <Loading />
             <Spacer size='1' />
             <ProgressBar progress={this.state.progress} max={this.state.events.length} />
+            <div>{this.state.progress} / {this.state.events.length}</div>
+            <div>{(this.state.progress / this.state.events.length * 100).toFixed(1)}%</div>
             <Spacer size='2' />
             <Title size='1.25'>Please be patient.</Title>
           </Section>
@@ -220,10 +223,10 @@ export default class App extends Component {
           this.setState({ page: 0 });
           return;
         }
-        console.log(res);
+        // console.log(res);
 
         const events = res.result.items;
-        this.state.events = events;
+        this.setState({ events });
 
         const W = events.some(e => e.summary &&
           typeof e.summary === 'string' &&
@@ -262,19 +265,20 @@ export default class App extends Component {
       maxConcurrent: 1,
       minTime: 225
     });
+    // console.log(this.values);
 
     for (let e of this.state.events) {
+      // console.log(e.colorId, this.values[e.summary[0]]);
       if (e.summary[1] === ' ' &&
       // pierwsza litera jest jedna z dozwolonych
       (e.summary[0] === 'W' || e.summary[0] === 'C' || e.summary[0] === 'L' || e.summary[0] === 'S' || e.summary[0] === 'P') &&
       this.state.types[e.summary[0]] === true &&
       this.values[e.summary[0]] &&
-      (!e.colorId || (e.colorId && e.colorId !== this.values[e.summary[0]]))) {
+      (!e.colorId || (e.colorId && e.colorId != this.values[e.summary[0]]))) {
         limiter.schedule(() => updateEventColor(this.state.lists[this.state.selected].id, e.id, this.values[e.summary[0]])).then(res => {
-          console.log('Finished', res);
+          // console.log('Finished', res);
           this.setState({ progress: this.state.progress + 1 });
           limiter.running().then(count => {
-            console.log(count + ' left');
             if (count === 0) this.setState({ page: 2 });
           });
         });
