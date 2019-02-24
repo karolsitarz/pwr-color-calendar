@@ -102,10 +102,10 @@ export default class App extends Component {
       open: ''
     };
     this.values = {
-      W: '6',
+      W: '9',
       C: '2',
-      L: '9',
-      S: '3',
+      L: '8',
+      S: '1',
       P: '7'
     };
     this.changeColors = this.changeColors.bind(this);
@@ -221,6 +221,8 @@ export default class App extends Component {
           <Section>
             <Title size='2'>Congratulations!.</Title>
             <Title size='1.75' unique bold>Everything's nice and pretty.</Title>
+            <Spacer $size='1' />
+            <Button secondary type='button' value='Go back' onClick={e => this.setState({ page: 0 })} />
           </Section>
         )}
         {this.state.page !== -3 ? null : (
@@ -259,21 +261,45 @@ export default class App extends Component {
           typeof e.summary === 'string' &&
           e.summary.substring(0, 2) === 'W ');
 
+        this.values.W = events.find(e => e.summary &&
+          typeof e.summary === 'string' &&
+          e.summary.substring(0, 2) === 'W ') ? events.find(e => e.summary.substring(0, 2) === 'W ').colorId || this.values.W : this.values.W;
+
+        //
         const C = events.some(e => e.summary &&
           typeof e.summary === 'string' &&
           e.summary.substring(0, 2) === 'C ');
 
+        this.values.C = events.find(e => e.summary &&
+          typeof e.summary === 'string' &&
+          e.summary.substring(0, 2) === 'C ') ? events.find(e => e.summary.substring(0, 2) === 'C ').colorId || this.values.C : this.values.C;
+
+        //
         const L = events.some(e => e.summary &&
           typeof e.summary === 'string' &&
           e.summary.substring(0, 2) === 'L ');
 
+        this.values.L = events.find(e => e.summary &&
+          typeof e.summary === 'string' &&
+          e.summary.substring(0, 2) === 'L ') ? events.find(e => e.summary.substring(0, 2) === 'L ').colorId || this.values.L : this.values.L;
+
+        //
         const S = events.some(e => e.summary &&
           typeof e.summary === 'string' &&
           e.summary.substring(0, 2) === 'S ');
 
+        this.values.S = events.find(e => e.summary &&
+          typeof e.summary === 'string' &&
+          e.summary.substring(0, 2) === 'S ') ? events.find(e => e.summary.substring(0, 2) === 'S ').colorId || this.values.S : this.values.S;
+
+        //
         const P = events.some(e => e.summary &&
           typeof e.summary === 'string' &&
           e.summary.substring(0, 2) === 'P ');
+
+        this.values.P = events.find(e => e.summary &&
+          typeof e.summary === 'string' &&
+          e.summary.substring(0, 2) === 'P ') ? events.find(e => e.summary.substring(0, 2) === 'P ').colorId || this.values.P : this.values.P;
 
         if (!W && !C && !L && !S && !P) {
           window.alert('Please choose a different calendar.');

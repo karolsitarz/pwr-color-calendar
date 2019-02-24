@@ -13,7 +13,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "bd": "npm run build && npm run deploy"
   },
   "eslintConfig": {
     "extends": "react-app"
