@@ -46,6 +46,7 @@ export const Button = styled.input`
   transition: transform .3s ease;
   cursor: pointer;
   pointer-events: auto;
+  flex-shrink: 0;
 
   &:hover {
     transform: scale(0.95);

@@ -52,6 +52,7 @@ export default createGlobalStyle`
   #root {
     overflow: auto;
     pointer-events: auto;
+    padding: 2em;
   }
   input {
     font-size: inherit;
