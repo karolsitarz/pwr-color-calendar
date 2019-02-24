@@ -27,14 +27,15 @@ export const spin = keyframes`
 export const Loading = styled.div`
   height: 4em;
   width: 4em;
-  border-radius: 50%;
   border-width: .25em;
+  border-radius: 50%;
   border-style: solid;
   animation: ${spin} 2s ease infinite;
   background-image: linear-gradient(white, white), var(--main);
   background-origin: border-box;
   background-clip: content-box, border-box;
   border-color: transparent transparent #ddd #ddd;
+  margin: ${props => props.center ? 'auto' : 'initial'};
 `;
 
 export const Button = styled.input`

@@ -17,6 +17,10 @@ const CalendarList = styled.div`
   flex-direction: column;
   overflow-y: auto;
   pointer-events: auto;
+  > ${Loading} {
+    background-image: linear-gradient(#f5f5f5, #f5f5f5), var(--main);
+  }
+
 `;
 
 const CalendarItem = styled.div`
@@ -130,7 +134,7 @@ export default class App extends Component {
             <Spacer $size='2' />
             <CalendarList>
               {this.state.lists.length === 0
-                ? <Loading />
+                ? <Loading center />
                 : this.state.lists.map((c, i) => (
                   <CalendarItem
                     selected={this.state.selected === i}
