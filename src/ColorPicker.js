@@ -96,8 +96,7 @@ export default class ColorPicker extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      selected: this.props.initial || 0,
-      open: false
+      selected: this.props.initial || 0
     };
   }
   select (id) {
@@ -110,10 +109,10 @@ export default class ColorPicker extends Component {
         <Wrapper>
           <Badge
             def={this.props.def}
-            onClick={e => this.setState({ open: !this.state.open })}
+            onClick={e => this.props.onOpen()}
             text={this.props.text}
             cid={this.state.selected} />
-          <ColorList open={this.state.open}>
+          <ColorList open={this.props.open}>
             <Color
               cid={''}
               onClick={e => this.select('')}

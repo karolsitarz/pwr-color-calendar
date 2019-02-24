@@ -19,6 +19,12 @@ const CalendarList = styled.div`
   pointer-events: auto;
 `;
 
+const SecondaryButton = styled(Button)`
+  font-size: 0.8em;
+  background: #ddd;
+  color: #666;
+`;
+
 const CalendarItem = styled.div`
   flex-shrink: 0;
   width: 100%;
@@ -98,14 +104,15 @@ export default class App extends Component {
         P: false
       },
       progress: 0,
-      max: 1
+      max: 1,
+      open: ''
     };
     this.values = {
-      W: '4',
+      W: '6',
       C: '2',
       L: '9',
       S: '3',
-      P: '5'
+      P: '7'
     };
     this.changeColors = this.changeColors.bind(this);
   }
@@ -157,30 +164,40 @@ export default class App extends Component {
             <Title size='1.75' unique bold>Pick your colors.</Title>
             <Spacer $size='2' />
             <ColorPicker
+              open={this.state.open === 'W'}
+              onOpen={e => this.setState({ open: this.state.open !== 'W' ? 'W' : '' })}
               onSelect={v => (this.values.W = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
               text='Wykład'
               visible={this.state.types.W}
               initial={this.values.W} />
             <ColorPicker
+              open={this.state.open === 'C'}
+              onOpen={e => this.setState({ open: this.state.open !== 'C' ? 'C' : '' })}
               onSelect={v => (this.values.C = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
               text='Ćwiczenia'
               visible={this.state.types.C}
               initial={this.values.C} />
             <ColorPicker
+              open={this.state.open === 'L'}
+              onOpen={e => this.setState({ open: this.state.open !== 'L' ? 'L' : '' })}
               onSelect={v => (this.values.L = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
               text='Laboratorium'
               visible={this.state.types.L}
               initial={this.values.L} />
             <ColorPicker
+              open={this.state.open === 'S'}
+              onOpen={e => this.setState({ open: this.state.open !== 'S' ? 'S' : '' })}
               onSelect={v => (this.values.S = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
               text='Seminarium'
               visible={this.state.types.S}
               initial={this.values.S} />
             <ColorPicker
+              open={this.state.open === 'P'}
+              onOpen={e => this.setState({ open: this.state.open !== 'P' ? 'P' : '' })}
               onSelect={v => (this.values.P = v)}
               def={this.state.lists[this.state.selected].backgroundColor}
               text='Projekt'
@@ -188,6 +205,8 @@ export default class App extends Component {
               initial={this.values.P} />
             <Spacer $size='2' />
             <Button type='button' value='Change colors' onClick={e => this.changeColors()} />
+            <Spacer $size='.5' />
+            <SecondaryButton type='button' value='Go back' onClick={e => this.setState({ page: 0 })} />
           </Section>
         )}
         {this.state.page !== -2 ? null : (
