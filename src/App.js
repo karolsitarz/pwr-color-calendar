@@ -16,7 +16,6 @@ export default class App extends Component {
   }
   componentDidMount () {
     on('logOut', e => this.setState({ section: 'LOGIN' }));
-
     on('signIn', e => this.setState({ section: 'FORM1' }));
   }
   render () {

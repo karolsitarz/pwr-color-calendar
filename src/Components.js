@@ -55,6 +55,12 @@ export const Button = styled.input`
     pointer-events: none;
     filter: grayscale(1);
   `}
+
+  ${props => props.secondary && css`
+    font-size: 0.8em;
+    background: #ddd;
+    color: #666;
+  `}
 `;
 
 export const Title = styled.span`

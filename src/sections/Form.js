@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import { getCalendars, getEvents, updateEventColor } from '../gapi';
+import { getCalendars, getEvents, updateEventColor, handleSignOutClick as signOut } from '../gapi';
 import { Section, Title, Spacer, Button, Loading } from '../Components';
 import ColorPicker from '../ColorPicker';
 import Bottleneck from 'bottleneck/es5';
@@ -17,12 +17,6 @@ const CalendarList = styled.div`
   flex-direction: column;
   overflow-y: auto;
   pointer-events: auto;
-`;
-
-const SecondaryButton = styled(Button)`
-  font-size: 0.8em;
-  background: #ddd;
-  color: #666;
 `;
 
 const CalendarItem = styled.div`
@@ -149,6 +143,8 @@ export default class App extends Component {
             </CalendarList>
             <Spacer $size='2' />
             <Button disabled={isNaN(this.state.selected)} type='button' value='Next' onClick={e => this.checkIfHas()} />
+            <Spacer $size='.5' />
+            <Button secondary type='button' value='Log Out' onClick={e => signOut()} />
           </Section>
         )}
         {this.state.page !== -1 ? null : (
@@ -206,7 +202,7 @@ export default class App extends Component {
             <Spacer $size='2' />
             <Button type='button' value='Change colors' onClick={e => this.changeColors()} />
             <Spacer $size='.5' />
-            <SecondaryButton type='button' value='Go back' onClick={e => this.setState({ page: 0 })} />
+            <Button secondary type='button' value='Go back' onClick={e => this.setState({ page: 0 })} />
           </Section>
         )}
         {this.state.page !== -2 ? null : (
