@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/pwr-color-calendar/static/js/runtime~main.d95732e0.js"
   },
   {
-    "revision": "85b1690a6e29f7349247",
-    "url": "/pwr-color-calendar/static/js/main.85b1690a.chunk.js"
+    "revision": "27ed10d37b4e4a6fa46c",
+    "url": "/pwr-color-calendar/static/js/main.27ed10d3.chunk.js"
   },
   {
     "revision": "77c3e427f22e35e6f4a3",
     "url": "/pwr-color-calendar/static/js/2.77c3e427.chunk.js"
   },
   {
-    "revision": "1ec71136678188636033935b98cdcdef",
+    "revision": "879a2f41431b3aa206619034667d3914",
     "url": "/pwr-color-calendar/index.html"
   }
 ];
