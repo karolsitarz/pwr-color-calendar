@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/pwr-color-calendar/precache-manifest.0431b206386639239d6bcd5423a7abb5.js"
+  "/pwr-color-calendar/precache-manifest.0c8deb39e661cd28ae4612b02f38f63e.js"
 );
 
 workbox.clientsClaim();
