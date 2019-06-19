@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Section, Title } from './Components';
+import { Section, Title } from '../components';
 
 export default class ErrorBoundary extends Component {
   constructor (props) {

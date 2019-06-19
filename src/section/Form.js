@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import { getCalendars, getEvents, updateEventColor, handleSignOutClick as signOut } from '../gapi';
-import { Section, Title, Spacer, Button, Loading } from '../Components';
-import ColorPicker from '../ColorPicker';
+import { getCalendars, getEvents, updateEventColor, handleSignOutClick as signOut } from '../util/gapi';
+import { Section, Title, Spacer, Button, Loading } from '../components';
+import ColorPicker from '../components/ColorPicker';
 import Bottleneck from 'bottleneck/es5';
 
 const CalendarList = styled.div`

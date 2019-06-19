@@ -1,6 +1,6 @@
 import React from 'react';
-import { Section, Title, Spacer, Button } from '../Components';
-import { handleSignInClick as signIn } from '../gapi';
+import { Section, Title, Spacer, Button } from '../components';
+import { handleSignInClick as signIn } from '../util/gapi';
 
 export default props => (
   <Section>

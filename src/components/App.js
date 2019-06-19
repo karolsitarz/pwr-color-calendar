@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { on } from './gapi';
+import { on } from '../util/gapi';
 import GlobalStyle from './GlobalStyle';
-import { Container } from './Components';
-import Login from './sections/Login';
-import Init from './sections/Init';
-import Form from './sections/Form';
+import { Container } from '.';
+import Login from '../section/Login';
+import Init from '../section/Init';
+import Form from '../section/Form';
 import ErrorPage from './ErrorPage';
 
 export default class App extends Component {
